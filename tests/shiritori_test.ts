@@ -42,6 +42,14 @@ Deno.test("use a zero length word", () => {
   );
 });
 
+Deno.test("use a word that contains non-hiragana character", () => {
+  const s = new Shiritori("しりとり");
+  assertEquals(
+    s.validateNextWord("apple"),
+    { isValid: false, reason: "ContainsNonHiraganaCharacter" },
+  );
+});
+
 Deno.test("chain unused word", () => {
   const s = new Shiritori("しりとり");
   s.ChainNextWord("りんご");

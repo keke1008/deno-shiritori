@@ -1,7 +1,8 @@
 export type ValidationReason =
   | "ZeroLengthString"
   | "UsedWord"
-  | "IllegalFirstCharacter";
+  | "IllegalFirstCharacter"
+  | "ContainsNonHiraganaCharacter";
 
 export type ValidationResult = { isValid: true } | {
   isValid: false;
@@ -20,6 +21,9 @@ export class Shiritori {
   validateNextWord(nextWord: string): ValidationResult {
     if (nextWord.length == 0) {
       return { isValid: false, reason: "ZeroLengthString" };
+    }
+    if (!nextWord.match(/^[\u3041-\u309fー]+$/)) { // ひらがな以外の文字を含む場合
+      return { isValid: false, reason: "ContainsNonHiraganaCharacter" };
     }
     if (this.setOfPreviousWords.has(nextWord)) {
       return { isValid: false, reason: "UsedWord" };

@@ -21,6 +21,7 @@ export const POST = async (req: Request) => {
     "IllegalFirstCharacter": "前の単語に続いていません",
     "ZeroLengthString": "単語が入力されていません",
     "UsedWord": "既に使用された単語です",
+    "ContainsNonHiraganaCharacter": "単語はひらがなのみで入力してください",
   };
   return new Response(reasonToMessageMap[result.reason], { status: 400 });
 };
