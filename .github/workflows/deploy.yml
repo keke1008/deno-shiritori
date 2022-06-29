@@ -1,0 +1,29 @@
+name: Deploy to Deno Deploy
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: denoland/setup-deno@v1
+        with:
+          deno-version: v1.x
+
+      - name: Build
+        run: deno task build
+
+      - name: Deploy
+        uses: denoland/deployctl@v1
+        with:
+          project: keke1008-deno-shiritori
+          entrypoint: dist/server.js
