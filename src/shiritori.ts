@@ -1,16 +1,37 @@
 let previousWord = "しりとり";
+const setOfPreviousWords = new Set([previousWord]);
 
-export const isValidNextWord = (nextWord: string): boolean => {
-  return nextWord.length > 0 &&
-    previousWord.charAt(previousWord.length - 1) === nextWord.charAt(0);
+export type ValidationReason =
+  | "ZeroLengthString"
+  | "UsedWord"
+  | "IllegalFirstCharacter";
+
+export type ValidationResult = { isValid: true } | {
+  isValid: false;
+  reason: ValidationReason;
 };
 
-export const setPreviousWord = (nextWord: string): boolean => {
-  if (!isValidNextWord(nextWord)) {
-    return false;
+export const validateNextWord = (nextWord: string): ValidationResult => {
+  if (nextWord.length == 0) {
+    return { isValid: false, reason: "ZeroLengthString" };
   }
-  previousWord = nextWord;
-  return true;
+  if (setOfPreviousWords.has(nextWord)) {
+    return { isValid: false, reason: "UsedWord" };
+  }
+  if (previousWord.charAt(previousWord.length - 1) !== nextWord.charAt(0)) {
+    return { isValid: false, reason: "IllegalFirstCharacter" };
+  }
+  return { isValid: true };
+};
+
+export const setPreviousWord = (nextWord: string): ValidationResult => {
+  const result = validateNextWord(nextWord);
+  if (result.isValid) {
+    previousWord = nextWord;
+    setOfPreviousWords.add(previousWord);
+  }
+
+  return result;
 };
 
 export const getPreviousWord = (): string => {
