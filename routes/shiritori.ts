@@ -1,7 +1,7 @@
 import {
   ChainNextWord,
   getPreviousWord,
-  ValidationReason,
+  ValidationError,
 } from "~/src/shiritori.ts";
 
 export const GET = (_req: Request) => {
@@ -13,15 +13,19 @@ export const POST = async (req: Request) => {
   const nextWord = requestJson.nextWord;
 
   const result = ChainNextWord(nextWord);
-  if (result.isValid) {
+  if (result.success) {
     return new Response(nextWord);
   }
 
-  const reasonToMessageMap: { [key in ValidationReason]: string } = {
+  if (result.reason == "InActive") {
+    return new Response("ゲームは既に終了しています", { status: 400 });
+  }
+
+  const reasonToMessageMap: { [key in ValidationError]: string } = {
     "IllegalFirstCharacter": "前の単語に続いていません",
     "ZeroLengthString": "単語が入力されていません",
     "UsedWord": "既に使用された単語です",
     "ContainsNonHiraganaCharacter": "単語はひらがなのみで入力してください",
   };
-  return new Response(reasonToMessageMap[result.reason], { status: 400 });
+  return new Response(reasonToMessageMap[result.error], { status: 400 });
 };
