@@ -1,6 +1,6 @@
 import {
+  ChainNextWord,
   getPreviousWord,
-  setPreviousWord,
   ValidationReason,
 } from "~/src/shiritori.ts";
 
@@ -12,7 +12,7 @@ export const POST = async (req: Request) => {
   const requestJson = await req.json() as { nextWord: string };
   const nextWord = requestJson.nextWord;
 
-  const result = setPreviousWord(nextWord);
+  const result = ChainNextWord(nextWord);
   if (result.isValid) {
     return new Response(nextWord);
   }

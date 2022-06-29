@@ -33,7 +33,7 @@ export class Shiritori {
     return { isValid: true };
   }
 
-  setPreviousWord(nextWord: string): ValidationResult {
+  ChainNextWord(nextWord: string): ValidationResult {
     const result = this.validateNextWord(nextWord);
 
     if (result.isValid) {
@@ -55,8 +55,8 @@ export const validateNextWord = (nextWord: string): ValidationResult => {
   return globalShiritori.validateNextWord(nextWord);
 };
 
-export const setPreviousWord = (nextWord: string): ValidationResult => {
-  return globalShiritori.setPreviousWord(nextWord);
+export const ChainNextWord = (nextWord: string): ValidationResult => {
+  return globalShiritori.ChainNextWord(nextWord);
 };
 
 export const getPreviousWord = (): string => {

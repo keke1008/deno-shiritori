@@ -19,7 +19,7 @@ Deno.test("use a unused word", () => {
 
 Deno.test("use a previous word", () => {
   const s = new Shiritori("しりとり");
-  s.setPreviousWord("りんご");
+  s.ChainNextWord("りんご");
   assertEquals(
     s.validateNextWord("りんご"),
     { isValid: false, reason: "UsedWord" },
@@ -44,14 +44,14 @@ Deno.test("use a zero length word", () => {
 
 Deno.test("chain unused word", () => {
   const s = new Shiritori("しりとり");
-  s.setPreviousWord("りんご");
+  s.ChainNextWord("りんご");
   assertEquals(s.previousWord, "りんご");
   assertEquals(s.setOfPreviousWords, new Set(["しりとり", "りんご"]));
 });
 
 Deno.test("chain illegal word", () => {
   const s = new Shiritori("しりとり");
-  s.setPreviousWord("おれんじ");
+  s.ChainNextWord("おれんじ");
   assertEquals(s.previousWord, "しりとり");
   assertEquals(s.setOfPreviousWords, new Set(["しりとり"]));
 });
