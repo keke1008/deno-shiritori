@@ -1,6 +1,3 @@
-let previousWord = "しりとり";
-const setOfPreviousWords = new Set([previousWord]);
-
 export type ValidationReason =
   | "ZeroLengthString"
   | "UsedWord"
@@ -11,29 +8,57 @@ export type ValidationResult = { isValid: true } | {
   reason: ValidationReason;
 };
 
+export class Shiritori {
+  previousWord: string;
+  setOfPreviousWords = new Set<string>();
+
+  constructor(initialWord: string) {
+    this.previousWord = initialWord;
+    this.setOfPreviousWords.add(initialWord);
+  }
+
+  validateNextWord(nextWord: string): ValidationResult {
+    if (nextWord.length == 0) {
+      return { isValid: false, reason: "ZeroLengthString" };
+    }
+    if (this.setOfPreviousWords.has(nextWord)) {
+      return { isValid: false, reason: "UsedWord" };
+    }
+    if (
+      this.previousWord.charAt(this.previousWord.length - 1) !==
+        nextWord.charAt(0)
+    ) {
+      return { isValid: false, reason: "IllegalFirstCharacter" };
+    }
+    return { isValid: true };
+  }
+
+  setPreviousWord(nextWord: string): ValidationResult {
+    const result = this.validateNextWord(nextWord);
+
+    if (result.isValid) {
+      this.previousWord = nextWord;
+      this.setOfPreviousWords.add(this.previousWord);
+    }
+
+    return result;
+  }
+
+  getPreviousWord(): string {
+    return this.previousWord;
+  }
+}
+
+const globalShiritori = new Shiritori("しりとり");
+
 export const validateNextWord = (nextWord: string): ValidationResult => {
-  if (nextWord.length == 0) {
-    return { isValid: false, reason: "ZeroLengthString" };
-  }
-  if (setOfPreviousWords.has(nextWord)) {
-    return { isValid: false, reason: "UsedWord" };
-  }
-  if (previousWord.charAt(previousWord.length - 1) !== nextWord.charAt(0)) {
-    return { isValid: false, reason: "IllegalFirstCharacter" };
-  }
-  return { isValid: true };
+  return globalShiritori.validateNextWord(nextWord);
 };
 
 export const setPreviousWord = (nextWord: string): ValidationResult => {
-  const result = validateNextWord(nextWord);
-  if (result.isValid) {
-    previousWord = nextWord;
-    setOfPreviousWords.add(previousWord);
-  }
-
-  return result;
+  return globalShiritori.setPreviousWord(nextWord);
 };
 
 export const getPreviousWord = (): string => {
-  return previousWord;
+  return globalShiritori.getPreviousWord();
 };
