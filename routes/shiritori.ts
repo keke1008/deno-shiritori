@@ -1,11 +1,28 @@
 import {
   ChainNextWord,
   getPreviousWord,
+  isGameActive,
   ValidationError,
 } from "~/src/shiritori.ts";
 
+export type GetResponse = { previousWord: string; isGameActive: boolean };
+
 export const GET = (_req: Request) => {
-  return new Response(getPreviousWord());
+  return new Response(
+    JSON.stringify({
+      previousWord: getPreviousWord(),
+      isGameActive: isGameActive(),
+    }),
+  );
+};
+
+export type PostResponse =
+  | { success: true; previousWord: string; isGameActive: boolean }
+  | { success: false; reason: string };
+
+const createPostResponse = (res: PostResponse): Response => {
+  const status = res.success ? 200 : 400;
+  return new Response(JSON.stringify(res), { status });
 };
 
 export const POST = async (req: Request) => {
@@ -14,11 +31,15 @@ export const POST = async (req: Request) => {
 
   const result = ChainNextWord(nextWord);
   if (result.success) {
-    return new Response(nextWord);
+    return createPostResponse({
+      success: true,
+      previousWord: nextWord,
+      isGameActive: !result.becomeInActive,
+    });
   }
 
   if (result.reason == "InActive") {
-    return new Response("ゲームは既に終了しています", { status: 400 });
+    return createPostResponse({ success: false, reason: "ゲームは既に終了しています" });
   }
 
   const reasonToMessageMap: { [key in ValidationError]: string } = {
@@ -27,5 +48,8 @@ export const POST = async (req: Request) => {
     "UsedWord": "既に使用された単語です",
     "ContainsNonHiraganaCharacter": "単語はひらがなのみで入力してください",
   };
-  return new Response(reasonToMessageMap[result.error], { status: 400 });
+  return createPostResponse({
+    success: false,
+    reason: reasonToMessageMap[result.error],
+  });
 };

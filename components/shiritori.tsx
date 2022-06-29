@@ -2,7 +2,7 @@ import React, { useRef } from "react";
 import { useShiritori } from "~/hooks/shiritori.ts";
 
 export const Shiritori: React.FC = () => {
-  const { previousWord, postNextWord } = useShiritori();
+  const { previousWord, postNextWord, isGameActive } = useShiritori();
 
   const nextWord = useRef<HTMLInputElement>(null!);
   const handleClick = async () => {
@@ -16,10 +16,10 @@ export const Shiritori: React.FC = () => {
   return (
     <>
       <h1>しりとり</h1>
+      {isGameActive || "ゲームが終了しました"}
       <p>前の単語: {previousWord}</p>
-      <input ref={nextWord} type="text" />
-      <button onClick={handleClick}>送信</button>
+      <input ref={nextWord} type="text" disabled={!isGameActive} />
+      <button onClick={handleClick} disabled={!isGameActive}>送信</button>
     </>
   );
 };
-

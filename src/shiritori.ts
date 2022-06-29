@@ -99,6 +99,10 @@ export class ShiritoriGame {
   getPreviousWord(): string {
     return this.shiritori.getPreviousWord();
   }
+
+  isGameActive(): boolean {
+    return this.isActive;
+  }
 }
 
 const globalShiritori = new ShiritoriGame("しりとり");
@@ -109,4 +113,8 @@ export const ChainNextWord = (nextWord: string): ChainResult => {
 
 export const getPreviousWord = (): string => {
   return globalShiritori.getPreviousWord();
+};
+
+export const isGameActive = (): boolean => {
+  return globalShiritori.isGameActive();
 };

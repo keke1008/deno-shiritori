@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import type { GetResponse, PostResponse } from "~/routes/shiritori.ts";
 
 const SHIRITORI_API_URL = "/shiritori";
 
@@ -18,14 +19,23 @@ export const useShiritori = (): {
    * @returns - 送信した結果．しりとりの次の単語としてふさわしくない場合，`.status === failure`となる
    */
   postNextWord: (nextWord: string) => Promise<PostResult>;
+
+  /***
+   * しりとりゲームが終了していないかどうか
+   */
+  isGameActive: boolean;
 } => {
   const [previousWord, setPreviousWord] = useState<string>("");
+  const [isGameActive, setIsGameActive] = useState<boolean>(true);
 
   // サーバーから前の単語を取得する
   useEffect(() => {
     fetch(SHIRITORI_API_URL)
-      .then((response) => response.text())
-      .then(setPreviousWord);
+      .then((response) => response.json() as Promise<GetResponse>)
+      .then(({ previousWord, isGameActive }) => {
+        setPreviousWord(previousWord);
+        setIsGameActive(isGameActive);
+      });
   }, []);
 
   const postNextWord = async (nextWord: string): Promise<PostResult> => {
@@ -35,14 +45,15 @@ export const useShiritori = (): {
       body: JSON.stringify({ nextWord }),
     });
 
-    const text = await response.text();
-    if (response.status !== 200) {
-      return { status: "failure", reason: text };
+    const json = await response.json() as PostResponse;
+    if (!json.success) {
+      return { status: "failure", reason: json.reason };
     }
 
-    setPreviousWord(text);
+    setPreviousWord(json.previousWord);
+    setIsGameActive(json.isGameActive);
     return { status: "success" };
   };
 
-  return { previousWord, postNextWord };
+  return { previousWord, postNextWord, isGameActive };
 };
