@@ -1,16 +1,23 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { useShiritori } from "~/hooks/shiritori.ts";
+import {
+  WordInputBox,
+  WordInputBoxHandler,
+} from "~/components/WordInputBox.tsx";
 
 export const Shiritori: React.FC = () => {
   const { previousWord, postNextWord, isGameActive } = useShiritori();
+  const [seinding, setSending] = useState(false);
 
-  const nextWord = useRef<HTMLInputElement>(null!);
-  const handleClick = async () => {
+  const nextWord = useRef<WordInputBoxHandler>(null!);
+  const postWord = async () => {
+    setSending(true);
     const result = await postNextWord(nextWord.current.value);
 
     if (result.status === "failure") {
       alert(result.reason);
     }
+    setSending(false);
   };
 
   return (
@@ -18,8 +25,11 @@ export const Shiritori: React.FC = () => {
       <h1>しりとり</h1>
       {isGameActive || "ゲームが終了しました"}
       <p>前の単語: {previousWord}</p>
-      <input ref={nextWord} type="text" disabled={!isGameActive} />
-      <button onClick={handleClick} disabled={!isGameActive}>送信</button>
+      <WordInputBox
+        ref={nextWord}
+        onConfirm={postWord}
+        disabled={!isGameActive || seinding}
+      />
     </>
   );
 };
