@@ -15,9 +15,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-        with:
-          persist-credentials: false
-
       - uses: denoland/setup-deno@v1
         with:
           deno-version: v1.x
