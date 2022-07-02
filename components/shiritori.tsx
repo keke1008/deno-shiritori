@@ -4,6 +4,8 @@ import {
   WordInputBox,
   WordInputBoxHandler,
 } from "~/components/WordInputBox.tsx";
+import { PreviousWord } from "~/components/PreviousWord.tsx";
+import { GameStatus } from "~/components/GameStatus.tsx";
 
 export const Shiritori: React.FC = () => {
   const { previousWord, postNextWord, isGameActive } = useShiritori();
@@ -22,14 +24,13 @@ export const Shiritori: React.FC = () => {
 
   return (
     <>
-      <h1>しりとり</h1>
-      {isGameActive || "ゲームが終了しました"}
-      <p>前の単語: {previousWord}</p>
+      <PreviousWord previousWord={previousWord} />
       <WordInputBox
         ref={nextWord}
         onConfirm={postWord}
         disabled={!isGameActive || seinding}
       />
+      <GameStatus isGameActive={isGameActive} />
     </>
   );
 };

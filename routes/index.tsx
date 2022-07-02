@@ -1,5 +1,6 @@
 import { Head } from "aleph/react";
 import { Shiritori } from "~/components/shiritori.tsx";
+import { Header } from "~/components/Header.tsx";
 
 export default function Index() {
   return (
@@ -8,6 +9,7 @@ export default function Index() {
         <title>しりとり</title>
         <meta name="description" content="Shiritori app in Deno." />
       </Head>
+      <Header />
       <Shiritori />
     </div>
   );

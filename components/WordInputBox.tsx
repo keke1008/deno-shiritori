@@ -36,7 +36,7 @@ export const WordInputBox = forwardRef<WordInputBoxHandler, Props>(
 
     return (
       <div className="w-full">
-        <div className="m-auto w-4/5">
+        <div className="m-auto w-4/5 max-w-3xl">
           <div className="flex bg-gray-200">
             <input
               type="text"
