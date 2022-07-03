@@ -1,5 +1,5 @@
 import React from "react";
-import { Icon } from "@iconfy/react";
+import { Icon } from "@iconify/react";
 
 interface Props {
   previousWord: string;
@@ -28,4 +28,3 @@ export const PreviousWord: React.FC<Props> = ({ previousWord }) => {
     </div>
   );
 };
-

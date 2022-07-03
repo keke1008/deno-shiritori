@@ -2,7 +2,7 @@
     "imports": {
         "~/": "./",
         "@unocss/": "https://deno.land/x/aleph@1.0.0-alpha.75/lib/@unocss/",
-        "@iconfy/react": "https://esm.sh/@iconify/react@3.2.2",
+        "@iconify/react": "https://esm.sh/@iconify/react@3.2.2",
         "aleph/": "https://deno.land/x/aleph@1.0.0-alpha.75/",
         "aleph/server": "https://deno.land/x/aleph@1.0.0-alpha.75/server/mod.ts",
         "aleph/react": "https://deno.land/x/aleph@1.0.0-alpha.75/framework/react/mod.ts",

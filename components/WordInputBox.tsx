@@ -5,7 +5,7 @@ import {
   useRef,
   useState,
 } from "react";
-import { Icon } from "@iconfy/react";
+import { Icon } from "@iconify/react";
 
 export interface WordInputBoxHandler {
   value: string;
