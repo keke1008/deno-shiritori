@@ -3,7 +3,7 @@ import {
   getPreviousWord,
   isGameActive,
   ValidationError,
-} from "~/src/shiritori.ts";
+} from "~/src/game.ts";
 
 export type GetResponse = { previousWord: string; isGameActive: boolean };
 

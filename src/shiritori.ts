@@ -104,17 +104,3 @@ export class ShiritoriGame {
     return this.isActive;
   }
 }
-
-const globalShiritori = new ShiritoriGame("しりとり");
-
-export const ChainNextWord = (nextWord: string): ChainResult => {
-  return globalShiritori.chainNextWord(nextWord);
-};
-
-export const getPreviousWord = (): string => {
-  return globalShiritori.getPreviousWord();
-};
-
-export const isGameActive = (): boolean => {
-  return globalShiritori.isGameActive();
-};
