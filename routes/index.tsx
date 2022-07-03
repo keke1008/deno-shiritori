@@ -1,5 +1,5 @@
 import { Head } from "aleph/react";
-import { Shiritori } from "~/components/shiritori.tsx";
+import { Shiritori } from "~/components/Shiritori.tsx";
 import { Header } from "~/components/Header.tsx";
 
 export default function Index() {
