@@ -23,7 +23,7 @@ export const Shiritori: React.FC = () => {
   };
 
   return (
-    <>
+    <div>
       <PreviousWord previousWord={previousWord} />
       <WordInputBox
         ref={nextWord}
@@ -31,6 +31,6 @@ export const Shiritori: React.FC = () => {
         disabled={!isGameActive || seinding}
       />
       <GameStatus isGameActive={isGameActive} />
-    </>
+    </div>
   );
 };

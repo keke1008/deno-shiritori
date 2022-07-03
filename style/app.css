@@ -2,3 +2,7 @@ body {
     margin: 0;
     font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
+
+.text-big {
+    font-size: clamp(150%, 8vw, 50px);
+}
