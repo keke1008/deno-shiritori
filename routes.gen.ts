@@ -3,10 +3,11 @@
 import d0 from "./routes/_app.tsx";
 import * as m1 from "./routes/shiritori.ts";
 import d2 from "./routes/index.tsx";
+import * as m3 from "./routes/watch.ts";
 
 export default {
   "./routes/_app.tsx": { default: d0 },
   "./routes/shiritori.ts": m1,
   "./routes/index.tsx": { default: d2 },
-};
-
+  "./routes/watch.ts": m3,
+}

@@ -1,9 +1,26 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { GetResponse, PostResponse } from "~/routes/shiritori.ts";
+import type { SSEEventType } from "~/src/game.ts";
 
 const SHIRITORI_API_URL = "/shiritori";
+const WATCH_ENDPOINT = "/watch";
 
 type PostResult = { status: "success" } | { status: "failure"; reason: string };
+
+/** SSEのイベントを型セーフにlistenする */
+const listen = <
+  E extends SSEEventType["event"],
+  D = Extract<SSEEventType, { event: E }> extends { data: infer D } ? D : never,
+>(
+  source: EventSource,
+  event: E,
+  callback: D[] extends never[] ? () => void : (data: D) => void,
+) => {
+  source.addEventListener(event, (e) => {
+    const data = JSON.parse(e.data) as D;
+    callback(data);
+  });
+};
 
 /**
  * しりとりの操作をサーバーとやり取りする
@@ -25,6 +42,7 @@ export const useShiritori = (): {
    */
   isGameActive: boolean;
 } => {
+  const eventSource = useRef<EventSource>();
   const [previousWord, setPreviousWord] = useState<string>("");
   const [isGameActive, setIsGameActive] = useState<boolean>(true);
 
@@ -36,6 +54,21 @@ export const useShiritori = (): {
         setPreviousWord(previousWord);
         setIsGameActive(isGameActive);
       });
+  }, []);
+
+  // サーバーから送られてくる各種イベントを監視する
+  useEffect(() => {
+    eventSource.current = new EventSource(WATCH_ENDPOINT);
+
+    listen(eventSource.current, "chainWord", ({ word }) => {
+      setPreviousWord(word);
+    });
+
+    listen(eventSource.current, "gameOver", () => {
+      setIsGameActive(false);
+    });
+
+    return () => eventSource.current!.close();
   }, []);
 
   const postNextWord = async (nextWord: string): Promise<PostResult> => {
