@@ -1,5 +1,8 @@
-import React, { useRef, useState } from "react";
-import { useShiritori } from "~/hooks/shiritori.ts";
+import React, { useRef } from "react";
+import { useFetchShiritori } from "~/hooks/useFetchShiritori.ts";
+import { useWatchShiritori } from "~/hooks/useWatchShiritori.ts";
+import { useLoading } from "~/hooks/useLoading.ts";
+
 import {
   WordInputBox,
   WordInputBoxHandler,
@@ -8,18 +11,17 @@ import { PreviousWord } from "~/components/PreviousWord.tsx";
 import { GameStatus } from "~/components/GameStatus.tsx";
 
 export const Shiritori: React.FC = () => {
-  const { previousWord, postNextWord, isGameActive } = useShiritori();
-  const [seinding, setSending] = useState(false);
+  const { previousWord, isGameActive } = useWatchShiritori();
+  const { chainNextWord: _chainNextWord } = useFetchShiritori();
+  const [chainNextWord, loading] = useLoading(_chainNextWord);
 
   const nextWord = useRef<WordInputBoxHandler>(null!);
   const postWord = async () => {
-    setSending(true);
-    const result = await postNextWord(nextWord.current.value);
+    const result = await chainNextWord(nextWord.current.value);
 
-    if (result.status === "failure") {
+    if (result?.success === false) {
       alert(result.reason);
     }
-    setSending(false);
   };
 
   return (
@@ -28,7 +30,7 @@ export const Shiritori: React.FC = () => {
       <WordInputBox
         ref={nextWord}
         onConfirm={postWord}
-        disabled={!isGameActive || seinding}
+        disabled={!isGameActive || loading}
       />
       <GameStatus isGameActive={isGameActive} />
     </div>
