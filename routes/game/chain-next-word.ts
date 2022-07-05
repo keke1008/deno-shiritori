@@ -1,4 +1,4 @@
-import { ChainNextWord, ValidationError } from "~/src/game.ts";
+import { chainNextWord, ValidationError } from "~/src/game.ts";
 
 export interface RequestBody {
   nextWord: string;
@@ -19,7 +19,7 @@ export const POST = async (request: Request) => {
     return errorResponse("不正なJsonフォーマット");
   }
 
-  const chainResult = ChainNextWord(nextWord);
+  const chainResult = chainNextWord(nextWord);
   if (chainResult.success) {
     return new Response(null, { status: 200 });
   }

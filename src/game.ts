@@ -21,7 +21,7 @@ export type SSEEventType = ChainWord | GameOver;
 
 const globalSSE = new SSE<SSEEventType>();
 
-export const ChainNextWord = (nextWord: string): ChainResult => {
+export const chainNextWord = (nextWord: string): ChainResult => {
   const result = globalShiritori.chainNextWord(nextWord);
   if (result.success) {
     globalSSE.send({ event: "chainWord", data: { word: nextWord } });

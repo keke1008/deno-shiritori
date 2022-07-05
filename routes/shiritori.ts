@@ -1,4 +1,4 @@
-import { ChainNextWord, getPreviousWord, ValidationError } from "~/src/game.ts";
+import { chainNextWord, getPreviousWord, ValidationError } from "~/src/game.ts";
 
 export type GetResponse = { previousWord: string };
 
@@ -10,7 +10,7 @@ export const POST = async (req: Request) => {
   const requestJson = await req.json() as { nextWord: string };
   const nextWord = requestJson.nextWord;
 
-  const result = ChainNextWord(nextWord);
+  const result = chainNextWord(nextWord);
   if (result.success) {
     return new Response(nextWord);
   }
