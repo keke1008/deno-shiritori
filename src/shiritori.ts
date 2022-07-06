@@ -61,18 +61,27 @@ export class Shiritori {
   }
 }
 
+export interface WordUpdate {
+  word: string;
+  playerId?: string;
+}
+
+export type WordUpdateHistory =
+  | [WordUpdate, ...Required<WordUpdate>[]]
+  | [WordUpdate];
+
 /** しりとりをゲームとして動かす */
 export class ShiritoriGame {
   shiritori: Shiritori;
-  history: string[] = [];
+  history: WordUpdateHistory;
   isActive = true;
 
   constructor(initialWord: string) {
     this.shiritori = new Shiritori(initialWord);
-    this.history.push(initialWord);
+    this.history = [{ word: initialWord }];
   }
 
-  chainNextWord(nextWord: string): ChainResult {
+  chainNextWord(nextWord: string, playerId: string): ChainResult {
     if (!this.isActive) {
       return { success: false, reason: "InActive" };
     }
@@ -84,7 +93,7 @@ export class ShiritoriGame {
     if (result.gameOver) {
       this.isActive = false;
     }
-    this.history.push(nextWord);
+    this.history.push({ word: nextWord, playerId });
 
     return result;
   }
@@ -99,11 +108,11 @@ export class ShiritoriGame {
 
   reset(initialWord: string) {
     this.shiritori = new Shiritori(initialWord);
-    this.history = [];
+    this.history = [{ word: initialWord }];
     this.isActive = true;
   }
 
-  getHistory(): readonly string[] {
+  getHistory(): WordUpdateHistory {
     return this.history;
   }
 }

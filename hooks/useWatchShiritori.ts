@@ -1,4 +1,4 @@
-import type { SSEEventType } from "~/src/game.ts";
+import type { SSEEventType, WordUpdateHistory } from "~/src/game.ts";
 import { useEffect, useRef, useState } from "react";
 import { useFetchShiritori } from "~/hooks/useFetchShiritori.ts";
 
@@ -26,7 +26,8 @@ export const useWatchShiritori = () => {
   const source = useRef<EventSource>();
   const [previousWord, setPreviousWord] = useState<string>("");
   const [isGameActive, setIsGameActive] = useState<boolean>(true);
-  const [history, setHistory] = useState<string[]>([]);
+  const [history, setHistory] = useState<WordUpdateHistory | []>([]);
+  const [updateStats, setUpdateStats] = useState<Record<string, number>>({});
 
   // 現在のゲームの状態をstateに反映する
   useEffect(() => {
@@ -37,6 +38,13 @@ export const useWatchShiritori = () => {
 
     getHistory().then(({ history }) => {
       setHistory(history);
+
+      const [_, ...history_] = history;
+      const stats: Record<string, number> = {};
+      for (const { playerId } of history_) {
+        stats[playerId] = (stats[playerId] ?? 0) + 1;
+      }
+      setUpdateStats(stats);
     });
   }, []);
 
@@ -44,9 +52,15 @@ export const useWatchShiritori = () => {
   useEffect(() => {
     source.current = new EventSource(WATCH_ENDPOINT);
 
-    listen(source.current, "chainWord", ({ word }) => {
+    listen(source.current, "chainWord", (update) => {
+      const { word, playerId } = update;
       setPreviousWord(word);
-      setHistory((history) => [...history, word]);
+      setHistory((history) => [...history, update]);
+
+      setUpdateStats((stats) => {
+        const next = (stats[playerId] ?? 0) + 1;
+        return { ...stats, [playerId]: next };
+      });
     });
 
     listen(source.current, "gameOver", () => {
@@ -55,12 +69,13 @@ export const useWatchShiritori = () => {
 
     listen(source.current, "resetGame", ({ initialWord }) => {
       setPreviousWord(initialWord);
-      setHistory([initialWord]);
+      setHistory([{ word: initialWord }]);
+      setUpdateStats({});
       setIsGameActive(true);
     });
 
     return () => source.current!.close();
   }, []);
 
-  return { isGameActive, previousWord, history };
+  return { isGameActive, previousWord, history, updateStats };
 };

@@ -1,17 +1,13 @@
-import { getHistory } from "~/src/game.ts";
-
-type UnReadOnly<T> = { -readonly [P in keyof T]: UnReadOnly<T[P]> };
+import { getHistory, WordUpdateHistory } from "~/src/game.ts";
 
 /** これまでのゲームの履歴 */
-interface StrictHistory {
+export interface History {
   /** 更新されてきた単語のリスト */
-  history: readonly string[];
+  history: WordUpdateHistory;
 }
 
-export type History = UnReadOnly<StrictHistory>;
-
 export const GET = () => {
-  const responseData: StrictHistory = {
+  const responseData: History = {
     history: getHistory(),
   };
   return new Response(JSON.stringify(responseData));

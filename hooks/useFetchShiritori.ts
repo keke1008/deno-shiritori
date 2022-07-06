@@ -4,11 +4,13 @@ import {
 } from "~/routes/game/chain-next-word.ts";
 import { GameStatus } from "~/routes/game/status.ts";
 import { History } from "~/routes/game/history.ts";
+import { PlayerId } from "~/routes/game/player.ts";
 
 const GAME_STATUS_ENDPOINT = "/game/status";
 const GAME_RESET_ENDPOINT = "/game/reset";
 const CHAIN_WORD_ENDPOINT = "/game/chain-next-word";
 const HISTORY_ENDPOINT = "/game/history";
+const PLAYER_ID_ENDPOINT = "/game/player";
 
 export type ChainNextWordResult =
   | { success: true }
@@ -50,6 +52,13 @@ export const useFetchShiritori = () => {
     getHistory: async (): Promise<History> => {
       const response = await fetch(HISTORY_ENDPOINT);
       return response.json() as Promise<History>;
+    },
+
+    /** プレイヤーのid を取得する */
+    getPlayerId: async (): Promise<string> => {
+      console.log(PLAYER_ID_ENDPOINT);
+      const response = await fetch(PLAYER_ID_ENDPOINT);
+      return (await response.json() as PlayerId).playerId;
     },
   };
 };

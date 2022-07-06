@@ -4,6 +4,7 @@ import { useWatchShiritori } from "~/hooks/useWatchShiritori.ts";
 import { useLoading } from "~/hooks/useLoading.ts";
 
 import { History } from "~/components/History.tsx";
+import { PlayerRanking } from "~/components/PlayerRanking.tsx";
 
 import {
   WordInputBox,
@@ -13,7 +14,12 @@ import { PreviousWord } from "~/components/PreviousWord.tsx";
 import { GameStatus } from "~/components/GameStatus.tsx";
 
 export const Shiritori: React.FC = () => {
-  const { previousWord, isGameActive, history } = useWatchShiritori();
+  const {
+    previousWord,
+    isGameActive,
+    history,
+    updateStats,
+  } = useWatchShiritori();
   const { chainNextWord: _chainNextWord, resetGame } = useFetchShiritori();
   const [chainNextWord, loading] = useLoading(_chainNextWord);
 
@@ -50,7 +56,7 @@ export const Shiritori: React.FC = () => {
           resetGame={reset}
         />
       </div>
-      <div className="flex-1"></div>
+      <PlayerRanking updateStats={updateStats} />
     </div>
   );
 };

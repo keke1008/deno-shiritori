@@ -1,4 +1,6 @@
 import { ChainError, chainNextWord } from "~/src/game.ts";
+import { COOKIE_PLAYER_ID_KEY } from "~/middlewares/player.ts";
+import { getCookies } from "std/http/cookie.ts";
 
 export interface RequestBody {
   nextWord: string;
@@ -19,7 +21,8 @@ export const POST = async (request: Request) => {
     return errorResponse("不正なJsonフォーマット");
   }
 
-  const chainResult = chainNextWord(nextWord);
+  const playerId = getCookies(request.headers)[COOKIE_PLAYER_ID_KEY];
+  const chainResult = chainNextWord(nextWord, playerId);
   if (chainResult.success) {
     return new Response(null, { status: 200 });
   }
