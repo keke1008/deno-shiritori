@@ -9,7 +9,8 @@ import { Icon } from "@iconify/react";
 
 export interface WordInputBoxHandler {
   value: string;
-  reset: () => void;
+  clear: () => void;
+  focus: () => void;
 }
 
 interface Props {
@@ -24,8 +25,11 @@ export const WordInputBox = forwardRef<WordInputBoxHandler, Props>(
       get value() {
         return textBox.current.value;
       },
-      reset() {
+      clear() {
         textBox.current.value = "";
+      },
+      focus() {
+        textBox.current.focus();
       },
     }));
 
