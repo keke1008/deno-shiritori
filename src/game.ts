@@ -16,8 +16,14 @@ export interface GameOver {
   event: "gameOver";
 }
 
+/** ゲームがリセットした */
+export interface ResetGame {
+  event: "resetGame";
+  data: { initialWord: string };
+}
+
 /** SSEで受信するイベントの種類 */
-export type SSEEventType = ChainWord | GameOver;
+export type SSEEventType = ChainWord | GameOver | ResetGame;
 
 const globalSSE = new SSE<SSEEventType>();
 
@@ -43,4 +49,12 @@ export const isGameActive = (): boolean => {
 
 export const acceptSSE = (): Response => {
   return globalSSE.accept();
+};
+
+export const resetGame = () => {
+  globalShiritori.reset(getRandomWord());
+  globalSSE.send({
+    event: "resetGame",
+    data: { initialWord: getPreviousWord() },
+  });
 };

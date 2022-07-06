@@ -47,6 +47,11 @@ export const useWatchShiritori = () => {
       setIsGameActive(false);
     });
 
+    listen(source.current, "resetGame", ({ initialWord }) => {
+      setPreviousWord(initialWord);
+      setIsGameActive(true);
+    });
+
     return () => source.current!.close();
   }, []);
 

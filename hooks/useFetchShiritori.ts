@@ -5,6 +5,7 @@ import {
 import { GameStatus } from "~/routes/game/status.ts";
 
 const GAME_STATUS_ENDPOINT = "/game/status";
+const GAME_RESET_ENDPOINT = "/game/reset";
 const CHAIN_WORD_ENDPOINT = "/game/chain-next-word";
 
 export type ChainNextWordResult =
@@ -36,6 +37,11 @@ export const useFetchShiritori = () => {
       }
 
       return { success: true };
+    },
+
+    /** 現在のゲームをリセットする */
+    resetGame: async (): Promise<void> => {
+      await fetch(GAME_RESET_ENDPOINT, { method: "POST" });
     },
   };
 };

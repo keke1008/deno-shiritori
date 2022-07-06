@@ -103,4 +103,9 @@ export class ShiritoriGame {
   isGameActive(): boolean {
     return this.isActive;
   }
+
+  reset(initialWord: string) {
+    this.shiritori = new Shiritori(initialWord);
+    this.isActive = true;
+  }
 }
