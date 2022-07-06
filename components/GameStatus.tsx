@@ -12,17 +12,12 @@ export const GameStatus: React.FC<Props> = ({ isGameActive, resetGame }) => {
   }
   const [pressed, setPressed] = useState(false);
 
-  const fontSize = "clamp(100%, 5vw, 50px)";
-
   return (
-    <div className="w-full flex justify-center m-5">
-      <div style={{ fontSize }}>
-        ゲームが終了しました
-      </div>
+    <div className="flex flex-col items-center m-4">
+      <div className="text-2xl">ゲームが終了しました</div>
       <button
         className={`
-            border-none flex items-center justify-center m-auto
-            rounded-full aspect-square h-full 
+            flex border-none rounded-full aspect-square h-full 
             ${pressed ? "bg-green-600" : "bg-green-500 shadow-md"}`}
         onClick={() => resetGame()}
         onMouseDown={() => setPressed(true)}
@@ -31,8 +26,7 @@ export const GameStatus: React.FC<Props> = ({ isGameActive, resetGame }) => {
       >
         <Icon
           icon="ant-design:reload-outlined"
-          fontSize={fontSize}
-          className="text-white"
+          className="text-white text-3xl self-center"
         />
       </button>
     </div>

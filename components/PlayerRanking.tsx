@@ -16,30 +16,40 @@ export const PlayerRanking: React.FC<Props> = ({ updateStats }) => {
   const ranking = Object.entries(updateStats).sort((a, b) => b[1] - a[1]);
 
   return (
-    <div className="flex-1 h-full">
-      <div className="m-10 p-4 h-full">
+    <div className="h-full">
+      <div
+        className="m-4 overflow-y-scroll"
+        style={{ width: "calc(100% - 2rem)" }}
+      >
         {ranking.map(([playerId, count]) => {
           const isSelf = playerId === selfId.current;
-          const bg = `hsl(${parseInt(playerId.slice(0, 8), 16)}, 100%, 90%)`;
+
+          const inner = (
+            <>
+              <div>{isSelf ? "YOU" : playerId.substring(0, 5)}</div>
+              <div>{count}</div>
+            </>
+          );
+
           if (isSelf) {
             return (
               <div
                 key={playerId}
-                className="flex flex-col items-center rounded-md text-red-600 border-solid my-4 p-4"
+                className="flex flex-col items-center rounded-md m-1 p-2 text-red-600 border-solid"
               >
-                <div>{isSelf ? "YOU" : playerId.substring(0, 5)}</div>
-                <div>{count}</div>
+                {inner}
               </div>
             );
           }
+
+          const bg = `hsl(${parseInt(playerId.slice(0, 8), 16)}, 100%, 90%)`;
           return (
             <div
               key={playerId}
-              style={isSelf ? {} : { backgroundColor: bg }}
-              className="flex flex-col items-center rounded-md text-black my-4 p-4"
+              style={{ backgroundColor: bg }}
+              className="flex flex-col items-center rounded-md m-1 p-2"
             >
-              <div>{isSelf ? "self" : playerId.substring(0, 5)}</div>
-              <div>{count}</div>
+              {inner}
             </div>
           );
         })}

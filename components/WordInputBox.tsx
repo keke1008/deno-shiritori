@@ -40,26 +40,23 @@ export const WordInputBox = forwardRef<WordInputBoxHandler, Props>(
       }
     };
 
-    const fontSize = "clamp(150%, 8vw, 50px)";
-
     return (
-      <div className="m-auto w-4/5 max-w-3xl">
-        <div className="flex bg-gray-200">
+      <div className="h-auto bg-white">
+        <div className="h-auto flex bg-gray-200">
           <input
             type="text"
             ref={textBox}
             onFocus={() => setHasFocus(true)}
             onBlur={() => setHasFocus(false)}
             onKeyDown={handleKeyDown}
-            style={{ fontSize }}
-            className="bg-transparent border-none outline-none m-0 w-full"
+            className="bg-transparent border-none outline-none m-0 p-2 w-full text-2xl overflow-y-hidden"
           />
 
           <Icon
             icon="ant-design:send-outlined"
             onClick={() => disabled || onConfirm()}
             className={`
-                text-big m-auto
+                text-4xl my-auto mx-2
                 ${disabled ? "text-gray-500" : "text-green-500"}
               `}
           />

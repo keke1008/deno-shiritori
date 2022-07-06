@@ -1,11 +1,12 @@
 import React, { useRef } from "react";
+
 import { useFetchShiritori } from "~/hooks/useFetchShiritori.ts";
 import { useWatchShiritori } from "~/hooks/useWatchShiritori.ts";
 import { useLoading } from "~/hooks/useLoading.ts";
 
 import { History } from "~/components/History.tsx";
 import { PlayerRanking } from "~/components/PlayerRanking.tsx";
-
+import { Header } from "~/components/Header.tsx";
 import {
   WordInputBox,
   WordInputBoxHandler,
@@ -13,7 +14,7 @@ import {
 import { PreviousWord } from "~/components/PreviousWord.tsx";
 import { GameStatus } from "~/components/GameStatus.tsx";
 
-export const Shiritori: React.FC = () => {
+export const Page: React.FC = () => {
   const {
     previousWord,
     isGameActive,
@@ -40,23 +41,40 @@ export const Shiritori: React.FC = () => {
     nextWord.current.clear();
     nextWord.current.focus();
   };
-
   return (
-    <div className="w-full flex justify-center h-full">
-      <History history={history} />
-      <div>
-        <PreviousWord previousWord={previousWord} />
-        <WordInputBox
-          ref={nextWord}
-          onConfirm={postWord}
-          disabled={!isGameActive || loading}
-        />
-        <GameStatus
-          isGameActive={isGameActive}
-          resetGame={reset}
-        />
-      </div>
-      <PlayerRanking updateStats={updateStats} />
+    <div
+      className="grid grid-rows-2 grid-cols-3 h-screen w-screen bg-green-100"
+      style={{
+        gridTemplateRows: "8vh 92vh",
+        gridTemplateColumns: "30vw 40vw 30vw",
+      }}
+    >
+      <header className="col-span-full">
+        <Header />
+      </header>
+
+      <section>
+        <History history={history} />
+      </section>
+
+      <section className="h-full bg-white">
+        <div className="m-4">
+          <PreviousWord previousWord={previousWord} />
+          <WordInputBox
+            ref={nextWord}
+            onConfirm={postWord}
+            disabled={!isGameActive || loading}
+          />
+          <GameStatus
+            isGameActive={isGameActive}
+            resetGame={reset}
+          />
+        </div>
+      </section>
+
+      <section>
+        <PlayerRanking updateStats={updateStats} />
+      </section>
     </div>
   );
 };

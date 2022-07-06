@@ -7,12 +7,19 @@ export interface Props {
 
 export const History: React.FC<Props> = ({ history }) => {
   return (
-    <div className="flex-1 h-full">
-      <div className="m-10 p-4 bg-green-200 h-full">
-        {history.map(({ word }, i) => {
+    <div className="h-full">
+      <div
+        className="m-4 overflow-y-scroll"
+        style={{ height: "calc(100% - 2rem)" }}
+      >
+        {[...history].reverse().map(({ word }) => {
           return (
-            <div key={word} className="w-full text-medium">
-              {`${i + 1}: ${word}`}
+            <div
+              key={word}
+              className="m-1 p-2 items-center rounded-md bg-green-200 text-center"
+              style={{ width: "calc(100% - 3rem)" }}
+            >
+              <div>{word}</div>
             </div>
           );
         })}
