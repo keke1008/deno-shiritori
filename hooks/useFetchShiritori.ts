@@ -3,10 +3,12 @@ import {
   RequestBody,
 } from "~/routes/game/chain-next-word.ts";
 import { GameStatus } from "~/routes/game/status.ts";
+import { History } from "~/routes/game/history.ts";
 
 const GAME_STATUS_ENDPOINT = "/game/status";
 const GAME_RESET_ENDPOINT = "/game/reset";
 const CHAIN_WORD_ENDPOINT = "/game/chain-next-word";
+const HISTORY_ENDPOINT = "/game/history";
 
 export type ChainNextWordResult =
   | { success: true }
@@ -42,6 +44,12 @@ export const useFetchShiritori = () => {
     /** 現在のゲームをリセットする */
     resetGame: async (): Promise<void> => {
       await fetch(GAME_RESET_ENDPOINT, { method: "POST" });
+    },
+
+    /** 現在のゲームの履歴を取得する */
+    getHistory: async (): Promise<History> => {
+      const response = await fetch(HISTORY_ENDPOINT);
+      return response.json() as Promise<History>;
     },
   };
 };

@@ -10,9 +10,7 @@ export default function Index() {
         <meta name="description" content="Shiritori app in Deno." />
       </Head>
       <Header />
-      <div className="w-full flex justify-center">
-        <Shiritori />
-      </div>
+      <Shiritori />
     </div>
   );
 }

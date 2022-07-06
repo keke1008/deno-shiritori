@@ -23,6 +23,7 @@ const lastChar = (str: string): string => {
 export class Shiritori {
   previousWord: string;
   setOfPreviousWords = new Set<string>();
+  history: string[] = [];
 
   static staticValidation(word: string): ValidationResult {
     if (word.length == 0) {
@@ -38,6 +39,7 @@ export class Shiritori {
     assert(Shiritori.staticValidation(initialWord).isValid);
     this.previousWord = initialWord;
     this.setOfPreviousWords.add(initialWord);
+    this.history.push(initialWord);
   }
 
   validateNextWord(nextWord: string): ValidationResult {
@@ -63,6 +65,7 @@ export class Shiritori {
 
     this.previousWord = nextWord;
     this.setOfPreviousWords.add(this.previousWord);
+    this.history.push(this.previousWord);
 
     return {
       success: true,
@@ -72,6 +75,10 @@ export class Shiritori {
 
   getPreviousWord(): string {
     return this.previousWord;
+  }
+
+  getHistory(): readonly string[] {
+    return this.history;
   }
 }
 
@@ -107,5 +114,9 @@ export class ShiritoriGame {
   reset(initialWord: string) {
     this.shiritori = new Shiritori(initialWord);
     this.isActive = true;
+  }
+
+  getHistory(): readonly string[] {
+    return this.shiritori.getHistory();
   }
 }

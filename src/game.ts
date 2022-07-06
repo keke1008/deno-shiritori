@@ -58,3 +58,7 @@ export const resetGame = () => {
     data: { initialWord: getPreviousWord() },
   });
 };
+
+export const getHistory = () => {
+  return globalShiritori.getHistory();
+};

@@ -5,8 +5,9 @@ import * as m1 from "./routes/shiritori.ts";
 import d2 from "./routes/index.tsx";
 import * as m3 from "./routes/watch.ts";
 import * as m4 from "./routes/game/chain-next-word.ts";
-import * as m5 from "./routes/game/reset.ts";
-import * as m6 from "./routes/game/status.ts";
+import * as m5 from "./routes/game/history.ts";
+import * as m6 from "./routes/game/reset.ts";
+import * as m7 from "./routes/game/status.ts";
 
 export default {
   "./routes/_app.tsx": { default: d0 },
@@ -14,6 +15,7 @@ export default {
   "./routes/index.tsx": { default: d2 },
   "./routes/watch.ts": m3,
   "./routes/game/chain-next-word.ts": m4,
-  "./routes/game/reset.ts": m5,
-  "./routes/game/status.ts": m6,
+  "./routes/game/history.ts": m5,
+  "./routes/game/reset.ts": m6,
+  "./routes/game/status.ts": m7,
 }

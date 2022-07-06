@@ -21,17 +21,22 @@ const listen = <
 
 /** サーバーから送られてくるデータをstateで管理する */
 export const useWatchShiritori = () => {
-  const { getGameStatus } = useFetchShiritori();
+  const { getGameStatus, getHistory } = useFetchShiritori();
 
   const source = useRef<EventSource>();
   const [previousWord, setPreviousWord] = useState<string>("");
   const [isGameActive, setIsGameActive] = useState<boolean>(true);
+  const [history, setHistory] = useState<string[]>([]);
 
   // 現在のゲームの状態をstateに反映する
   useEffect(() => {
     getGameStatus().then(({ previousWord, isGameActive }) => {
       setPreviousWord(previousWord);
       setIsGameActive(isGameActive);
+    });
+
+    getHistory().then(({ history }) => {
+      setHistory(history);
     });
   }, []);
 
@@ -41,6 +46,7 @@ export const useWatchShiritori = () => {
 
     listen(source.current, "chainWord", ({ word }) => {
       setPreviousWord(word);
+      setHistory((history) => [...history, word]);
     });
 
     listen(source.current, "gameOver", () => {
@@ -49,11 +55,12 @@ export const useWatchShiritori = () => {
 
     listen(source.current, "resetGame", ({ initialWord }) => {
       setPreviousWord(initialWord);
+      setHistory([initialWord]);
       setIsGameActive(true);
     });
 
     return () => source.current!.close();
   }, []);
 
-  return { isGameActive, previousWord };
+  return { isGameActive, previousWord, history };
 };
