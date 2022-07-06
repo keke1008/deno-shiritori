@@ -69,6 +69,7 @@ export class ShiritoriGame {
 
   constructor(initialWord: string) {
     this.shiritori = new Shiritori(initialWord);
+    this.history.push(initialWord);
   }
 
   chainNextWord(nextWord: string): ChainResult {
