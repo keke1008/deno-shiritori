@@ -1,4 +1,4 @@
-import { chainNextWord, ValidationError } from "~/src/game.ts";
+import { ChainError, chainNextWord } from "~/src/game.ts";
 
 export interface RequestBody {
   nextWord: string;
@@ -28,7 +28,7 @@ export const POST = async (request: Request) => {
     return errorResponse("ゲームは既に終了しています");
   }
 
-  const reasonToMessageMap: { [key in ValidationError]: string } = {
+  const reasonToMessageMap: { [key in ChainError]: string } = {
     "IllegalFirstCharacter": "前の単語に続いていません",
     "ZeroLengthString": "単語が入力されていません",
     "UsedWord": "既に使用された単語です",

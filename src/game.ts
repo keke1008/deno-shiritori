@@ -1,7 +1,8 @@
-export type { ValidationError } from "~/src/shiritori.ts";
 import { ChainResult, ShiritoriGame } from "~/src/shiritori.ts";
 import { getRandomWord } from "~/src/randomWord.ts";
 import { SSE } from "~/src/SSE.ts";
+
+export type { ChainError, ChainResult } from "~/src/shiritori.ts";
 
 const globalShiritori = new ShiritoriGame(getRandomWord());
 
@@ -32,7 +33,7 @@ export const chainNextWord = (nextWord: string): ChainResult => {
   if (result.success) {
     globalSSE.send({ event: "chainWord", data: { word: nextWord } });
 
-    if (result.becomeInActive) {
+    if (result.gameOver) {
       globalSSE.send({ event: "gameOver" });
     }
   }
