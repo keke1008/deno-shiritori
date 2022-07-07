@@ -18,7 +18,7 @@ export const PlayerRanking: React.FC<Props> = ({ updateStats }) => {
   return (
     <div className="h-full">
       <div
-        className="m-4 overflow-y-scroll"
+        className="m-4 overflow-y-scroll hide-scrollbar"
         style={{ width: "calc(100% - 2rem)" }}
       >
         {ranking.map(([playerId, count]) => {

@@ -4,5 +4,13 @@ html {
 
 body {
     margin: 0;
+    overflow: hidden;
     font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+.hide-scrollbar {
+    scrollbar-width: none; 
+}
+.hide-scrollbar::-webkit-scrollbar {
+    display: none;
 }

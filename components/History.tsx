@@ -9,7 +9,7 @@ export const History: React.FC<Props> = ({ history }) => {
   return (
     <div className="h-full">
       <div
-        className="m-4 overflow-y-scroll"
+        className="m-4 overflow-y-scroll hide-scrollbar"
         style={{ height: "calc(100% - 2rem)" }}
       >
         {[...history].reverse().map(({ word }) => {
